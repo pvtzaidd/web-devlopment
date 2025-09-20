@@ -1,0 +1,1311 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ColorMatch</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Day Theme (Default) */
+        :root {
+            --bg-primary: linear-gradient(to right, #B8A17F, #cc9e5a);
+            --bg-secondary: #f5f0e6;
+            --text-primary: #333;
+            --text-secondary: #666;
+            --accent: #c9a870;
+            --accent-hover: #b89659;
+            --card-bg: #fff;
+            --card-shadow: rgba(0, 0, 0, 0.05);
+            --input-border: #e0e0e0;
+            --input-focus: #c9a870;
+            --footer-bg: rgba(255, 255, 255, 0.9);
+            --header-bg: rgba(255, 255, 255, 0.9);
+            --button-primary: linear-gradient(to right, #B8A17F, #CC9E5A);
+            --spinner-color: #B8A17F;
+        }
+
+        /* Night Theme */
+        .night-theme {
+            --bg-primary: linear-gradient(to right, #1a1a2e, #16213e);
+            --bg-secondary: #0f3460;
+            --text-primary: #e1e1e6;
+            --text-secondary: #a0a0a8;
+            --accent: #5d8aa8;
+            --accent-hover: #3d6aa8;
+            --card-bg: #162447;
+            --card-shadow: rgba(0, 0, 0, 0.3);
+            --input-border: #3a3a4a;
+            --input-focus: #5d8aa8;
+            --footer-bg: rgba(22, 36, 71, 0.9);
+            --header-bg: rgba(22, 36, 71, 0.9);
+            --button-primary: linear-gradient(to right, #16213e, #0f3460);
+            --spinner-color: #5d8aa8;
+        }
+
+        /* Apply CSS Variables */
+        body {
+            font-family: 'Poppins', 'Inter', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+        
+        h1, h2, h3, h4 {
+            font-family: 'Playfair Display', serif;
+            color: var(--text-primary);
+        }
+        
+        .hero-section {
+            background: var(--bg-secondary);
+            animation: fadeIn 1.2s ease-in-out;
+        }
+        
+        .gold-accent {
+            color: var(--accent);
+        }
+        
+        .btn-primary-custom {
+            background-color: var(--accent);
+            border: none;
+            color: #fff;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary-custom:hover {
+            background-color: var(--accent-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(201, 168, 112, 0.3);
+        }
+        
+        .btn-secondary-custom {
+            background-color: var(--card-bg);
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-secondary-custom:hover {
+            background-color: var(--bg-secondary);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(201, 168, 112, 0.2);
+        }
+        
+        .social-icon {
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            color: white;
+            background-color: var(--accent);
+            transition: all 0.3s ease;
+        }
+        
+        .social-icon:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+        }
+        
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 1rem;
+            animation: fadeIn 1s ease-in-out;
+        }
+        
+        .main-content h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-shadow: 1px 1px 5px rgba(0,0,0,0.2);
+        }
+        
+        .main-content p {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            max-width: 500px;
+            line-height: 1.5;
+            color: var(--text-primary);
+        }
+        
+        .btn {
+            background: var(--button-primary);
+            color: #fff;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 2px 2px 6px rgba(0,0,0,0.2);
+        }
+        
+        .btn:hover {
+            background: var(--accent-hover);
+            color: white;
+            transform: scale(1.05);
+        }
+        
+        .fade-in-section {
+            animation: fadeIn 1s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @media (max-width: 600px) {
+            .main-content h1 {
+                font-size: 2rem;
+            }
+        }
+        
+        .custom-alert-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        
+        .custom-alert-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .custom-alert-box {
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            max-width: 350px;
+            width: 90%;
+            transform: translateY(-20px);
+            opacity: 0;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+        
+        .custom-alert-overlay.active .custom-alert-box {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        .custom-alert-box h3 {
+            margin-top: 0;
+            color: var(--text-primary);
+            font-size: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .custom-alert-box p {
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+        }
+        
+        .custom-alert-box button {
+            background-color: var(--accent);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s ease;
+        }
+        
+        .custom-alert-box button:hover {
+            background-color: var(--accent-hover);
+        }
+        
+        .main-footer {
+            background-color: var(--footer-bg);
+            padding: 2rem 1rem;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+            color: var(--text-primary);
+            margin-top: auto;
+        }
+        
+        .footer-content-wrapper {
+            max-width: 960px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        
+        @media (min-width: 768px) {
+            .footer-content-wrapper {
+                flex-direction: row;
+            }
+        }
+        
+        .footer-brand-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .footer-copyright {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+        
+        .footer-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+        
+        .footer-link {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-link:hover {
+            color: var(--accent);
+        }
+        
+        .social-icons-list {
+            display: flex;
+            gap: 0.75rem;
+        }
+        
+        /* AI Analyzer Styles */
+        .app-container {
+            max-width: 900px;
+            margin: 2rem auto;
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px var(--card-shadow);
+        }
+        
+        .input-method-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .input-method-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            flex: 1 1 45%;
+        }
+        
+        .btn-primary-analyze {
+            background: var(--button-primary);
+            color: white;
+            padding: 1rem 2.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 9999px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-primary-analyze:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+        
+        .loading-indicator {
+            text-align: center;
+            margin-top: 2rem;
+            animation: fade-in 0.5s ease-out;
+        }
+        
+        .loading-spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--spinner-color);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .color-results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+        
+        .color-swatch {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 4px 10px var(--card-shadow);
+            padding: 1.5rem;
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+        
+        .color-swatch:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .color-block {
+            width: 100%;
+            height: 100px;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+        
+        .color-name {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .color-hex {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+        
+        .color-rationale {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+        
+        .toggle-switch-wrapper {
+            position: relative;
+            display: inline-block;
+            width: 80px;
+            height: 34px;
+            background-color: #e2e8f0;
+            border-radius: 17px;
+            cursor: pointer;
+        }
+        
+        .toggle-label {
+            position: relative;
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .toggle-dot {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 30px;
+            height: 30px;
+            background-color: white;
+            border-radius: 50%;
+            transition: transform 0.3s ease;
+        }
+        
+        .toggle-text-left, .toggle-text-right {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.8rem;
+            color: #a0aec0;
+            transition: color 0.3s ease;
+            font-weight: bold;
+        }
+        
+        .toggle-text-left { left: 8px; }
+        .toggle-text-right { right: 8px; }
+        
+        input[type="checkbox"]:checked + .toggle-label .toggle-dot {
+            transform: translateX(46px);
+        }
+        
+        input[type="checkbox"]:checked + .toggle-label .toggle-text-right { color: #5a67d8; }
+        input[type="checkbox"]:checked + .toggle-label .toggle-text-left { color: #a0aec0; }
+        
+        .main-section {
+            display: none;
+            padding: 2rem 1rem;
+        }
+        
+        .main-section.active {
+            display: block;
+            animation: fadeIn 0.8s ease-in-out;
+        }
+        
+        /* Login and Registration specific styles */
+        .login-container, .registration-container {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            width: 100%;
+            max-width: 450px;
+            padding: 40px;
+            margin: 20px auto;
+        }
+        
+        .form-control {
+            border: 1px solid var(--input-border);
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            padding: 14px 16px;
+            background-color: var(--card-bg);
+            color: var(--text-primary);
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--input-focus);
+            box-shadow: 0 0 0 3px rgba(201, 168, 112, 0.1);
+        }
+        
+        .btn-register, .btn-login {
+            display: block;
+            width: 100%;
+            padding: 14px 24px;
+            font-size: 16px;
+            font-weight: 500;
+            text-align: center;
+            border: none;
+            border-radius: 8px;
+            background: var(--button-primary);
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(204, 158, 90, 0.3);
+        }
+        
+        /* Theme Toggle Button */
+        .theme-toggle-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            z-index: 100;
+            transition: all 0.3s ease;
+        }
+        
+        .theme-toggle-btn:hover {
+            transform: translateY(-2px);
+            background-color: var(--accent-hover);
+        }
+        
+        /* Webcam styles */
+        #webcamContainer {
+            margin-top: 20px;
+            text-align: center;
+        }
+        
+        #webcamVideo {
+            width: 100%;
+            max-width: 400px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px var(--card-shadow);
+            margin: 0 auto;
+            display: none;
+        }
+        
+        #captureBtn {
+            margin-top: 15px;
+            padding: 10px 20px;
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        #captureBtn:hover {
+            background-color: var(--accent-hover);
+            transform: translateY(-2px);
+        }
+        
+        #capturedImage {
+            width: 100%;
+            max-width: 400px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px var(--card-shadow);
+            margin: 15px auto 0;
+            display: none;
+        }
+        
+        .webcam-instructions {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+    <!-- Header & Navigation -->
+    <header class="w-full bg-white bg-opacity-90 shadow-md backdrop-blur-sm sticky top-0 z-50 transition-all duration-300" style="background-color: var(--header-bg);">
+        <div class="container mx-auto p-4 flex justify-between items-center">
+            <a href="#home" class="text-2xl font-bold text-gray-800 transition transform hover:scale-110">Color<span class="gold-accent">Match</span></a>
+            <nav class="hidden md:flex space-x-6 items-center">
+                <a href="#home" class="nav-link text-gray-600 hover:text-gray-900 transition-colors">Home</a>
+                <a href="#dashboard" class="nav-link text-gray-600 hover:text-gray-900 transition-colors">Dashboard</a>
+                <a href="#contact" class="nav-link text-gray-600 hover:text-gray-900 transition-colors">Contact</a>
+                <a href="#login" class="nav-link bg-gradient-to-r from-[#B8A17F] to-[#CC9E5A] text-white px-4 py-2 rounded-full font-medium shadow-md hover:opacity-90 transition">Login</a>
+            </nav>
+            <button id="mobile-menu-btn" class="md:hidden text-gray-600 hover:text-gray-900 focus:outline-none">
+                <i class="fa-solid fa-bars text-2xl"></i>
+            </button>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white shadow-lg py-4 text-center">
+            <a href="#home" class="nav-link block py-2 px-4 hover:bg-gray-100 transition-colors">Home</a>
+            <a href="#dashboard" class="nav-link block py-2 px-4 hover:bg-gray-100 transition-colors">Dashboard</a>
+            <a href="#contact" class="nav-link block py-2 px-4 hover:bg-gray-100 transition-colors">Contact</a>
+            <a href="#login" class="nav-link block py-2 px-4 hover:bg-gray-100 transition-colors">Login</a>
+            <a href="#registration" class="nav-link block py-2 px-4 hover:bg-gray-100 transition-colors">Sign Up</a>
+        </div>
+    </header>
+    <main class="flex-1">
+        <!-- Home Section -->
+        <section id="home" class="main-section active">
+            <div class="main-content">
+                <h1>Discover Your Perfect Colors</h1>
+                <p>Upload a photo or use your webcam to get color palettes that match your skin tone.</p>
+                <button class="btn">
+                    <a href="#dashboard" class="text-white no-underline">Get Started</a>
+                </button>
+            </div>
+        </section>
+        <!-- Dashboard Section (Main App) -->
+        <section id="dashboard" class="main-section hidden">
+            <div class="container mx-auto p-4 flex flex-col items-center">
+                <div class="w-full text-center py-14">
+                    <h1 class="text-4xl md:text-5xl font-bold mb-2">Color<span class="gold-accent">Match</span></h1>
+                    <p class="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto italic font-light">
+                        Discover the perfect color palette that complements your unique skin tone.
+                    </p>
+                </div>
+                <div class="app-container">
+                    <section class="input-section">
+                        <div class="input-method-buttons">
+                            <div class="input-method-item">
+                                <button id="uploadPhotoBtn" class="btn-primary-custom flex items-center justify-center p-3 rounded-md w-full mb-2 transform hover:scale-105">
+                                    <i class="fas fa-upload mr-2"></i> Upload Photo
+                                </button>
+                                <input type="file" id="photoInput" class="hidden" accept="image/*">
+                                <p class="text-sm text-gray-500">Upload a clear photo of your face (Max 25MB)</p>
+                            </div>
+                            <div class="input-method-item">
+                                <button id="useWebcamBtn" class="btn-secondary-custom flex items-center justify-center p-3 rounded-md w-full mb-2 transform hover:scale-105">
+                                    <i class="fas fa-camera mr-2"></i> Use Webcam
+                                </button>
+                                <p class="text-sm text-gray-500">Capture your photo with webcam</p>
+                            </div>
+                            <div class="input-method-item">
+                                <button id="chooseSwatchBtn" class="btn-secondary-custom flex items-center justify-center p-3 rounded-md w-full mb-2 transform hover:scale-105">
+                                    <i class="fas fa-palette mr-2"></i> Choose Swatch
+                                </button>
+                                <p class="text-sm text-gray-500">Select from predefined skin tone options</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Webcam Container -->
+                        <div id="webcamContainer" class="hidden mt-6">
+                            <video id="webcamVideo" autoplay playsinline></video>
+                            <button id="captureBtn" class="hidden">Capture Photo</button>
+                            <img id="capturedImage" alt="Captured from webcam">
+                            <p class="webcam-instructions">Make sure your face is well-lit and centered</p>
+                        </div>
+                        
+                        <!-- Photo Preview Container -->
+                        <div id="photoPreviewContainer" class="hidden mt-6">
+                            <div class="relative bg-gray-100 p-4 rounded-xl shadow-inner">
+                                <img id="photoPreview" class="w-full h-auto max-h-96 object-contain rounded-lg" src="#" alt="Your uploaded photo">
+                                <p id="photoName" class="text-sm text-gray-500 mt-2 text-center truncate"></p>
+                            </div>
+                        </div>
+                        
+                        <!-- Swatch Container -->
+                        <div id="swatchContainer" class="hidden mt-6">
+                            <h3 class="text-lg font-semibold mb-4 text-center">Select Your Skin Tone</h3>
+                            <div class="flex justify-center space-x-4">
+                                <div class="w-12 h-12 rounded-full cursor-pointer transition-transform hover:scale-110 shadow-lg" style="background-color: #FFDFC4;" data-tone="light"></div>
+                                <div class="w-12 h-12 rounded-full cursor-pointer transition-transform hover:scale-110 shadow-lg" style="background-color: #F0C8A0;" data-tone="fair"></div>
+                                <div class="w-12 h-12 rounded-full cursor-pointer transition-transform hover:scale-110 shadow-lg" style="background-color: #D8A878;" data-tone="medium"></div>
+                                <div class="w-12 h-12 rounded-full cursor-pointer transition-transform hover:scale-110 shadow-lg" style="background-color: #B67C55;" data-tone="olive"></div>
+                                <div class="w-12 h-12 rounded-full cursor-pointer transition-transform hover:scale-110 shadow-lg" style="background-color: #774E24;" data-tone="dark"></div>
+                            </div>
+                        </div>
+                    </section>
+                    <section class="mt-8 text-center">
+                        <div class="flex items-center justify-center space-x-4 mb-6">
+                            <span class="text-gray-600 font-medium">Show 5 Colors</span>
+                            <div class="toggle-switch-wrapper">
+                                <input type="checkbox" id="resultToggle" class="hidden" />
+                                <label for="resultToggle" class="toggle-label">
+                                    <div class="toggle-dot bg-gray-400"></div>
+                                </label>
+                            </div>
+                            <span class="text-gray-600 font-medium">Show 10 Colors</span>
+                        </div>
+                        <button id="analyzeBtn" class="btn-primary-analyze transform hover:scale-105">
+                            <i class="fas fa-magic mr-2"></i> Analyze
+                        </button>
+                    </section>
+                    <div id="loadingIndicator" class="hidden mt-8 text-center">
+                        <div class="loading-spinner inline-block"></div>
+                        <p class="mt-2 text-gray-500">Analyzing your perfect colors...</p>
+                    </div>
+                    <div id="resultsSection" class="hidden mt-8 bg-gray-50 p-6 rounded-2xl shadow-inner animate-fade-in">
+                        <h2 class="text-2xl md:text-3xl font-bold mb-4 text-center text-purple-600">Your Color Palette</h2>
+                        <div id="colorResults" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                            <!-- Results will be displayed here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Login Section -->
+        <section id="login" class="main-section hidden flex items-center justify-center p-6">
+            <div class="login-container">
+                <h1 class="text-2xl font-bold text-center mb-2">Welcome back</h1>
+                <p class="text-center mb-6 text-gray-600">Please enter your credentials to login</p>
+                <form id="login-form">
+                    <div class="mb-4">
+                        <label for="login-email" class="block text-gray-700 font-medium mb-1">Email</label>
+                        <input type="email" id="login-email" class="w-full p-3 rounded-lg border focus:border-gold-accent focus:ring-1 focus:ring-gold-accent form-control" placeholder="Enter your email" required>
+                    </div>
+                    <div class="mb-6 relative">
+                        <label for="login-password" class="block text-gray-700 font-medium mb-1">Password</label>
+                        <input type="password" id="login-password" class="w-full p-3 rounded-lg border focus:border-gold-accent focus:ring-1 focus:ring-gold-accent form-control" placeholder="Enter your password" required>
+                        <span class="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-gray-400" onclick="togglePasswordVisibility('login-password')"><i class="far fa-eye"></i></span>
+                    </div>
+                    <button type="submit" class="btn-login w-full py-3 rounded-lg font-semibold text-lg hover:opacity-90 transition-opacity">
+                        Log In
+                    </button>
+                    <p class="text-center mt-4">
+                        Don't have an account? <a href="#registration" class="text-gold-accent hover:underline">Sign up here</a>
+                    </p>
+                </form>
+            </div>
+        </section>
+        <!-- Registration Section -->
+        <section id="registration" class="main-section hidden flex items-center justify-center p-6">
+            <div class="registration-container">
+                <h1 class="text-2xl font-bold text-center mb-2">Create Account</h1>
+                <p class="text-center mb-6 text-gray-600">Get personalized color recommendations!</p>
+                <form id="registration-form">
+                    <div class="mb-4">
+                        <label for="reg-username" class="block text-gray-700 font-medium mb-1">Username</label>
+                        <input type="text" id="reg-username" class="w-full p-3 rounded-lg border focus:border-gold-accent focus:ring-1 focus:ring-gold-accent form-control" placeholder="Choose a username" required>
+                    </div>
+                    <div class="mb-4">
+                        <label for="reg-email" class="block text-gray-700 font-medium mb-1">Email</label>
+                        <input type="email" id="reg-email" class="w-full p-3 rounded-lg border focus:border-gold-accent focus:ring-1 focus:ring-gold-accent form-control" placeholder="Enter your email" required>
+                    </div>
+                    <div class="mb-4 relative">
+                        <label for="reg-password" class="block text-gray-700 font-medium mb-1">Password</label>
+                        <input type="password" id="reg-password" class="w-full p-3 rounded-lg border focus:border-gold-accent focus:ring-1 focus:ring-gold-accent form-control" placeholder="Create a password" required>
+                        <span class="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-gray-400" onclick="togglePasswordVisibility('reg-password')"><i class="far fa-eye"></i></span>
+                    </div>
+                    <div class="mb-4 relative">
+                        <label for="reg-confirm-password" class="block text-gray-700 font-medium mb-1">Confirm Password</label>
+                        <input type="password" id="reg-confirm-password" class="w-full p-3 rounded-lg border focus:border-gold-accent focus:ring-1 focus:ring-gold-accent form-control" placeholder="Confirm your password" required>
+                        <span class="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-gray-400" onclick="togglePasswordVisibility('reg-confirm-password')"><i class="far fa-eye"></i></span>
+                        <p id="password-match-error" class="text-red-500 text-sm mt-1 hidden">Passwords do not match.</p>
+                    </div>
+                    <button type="submit" class="btn-register w-full py-3 rounded-lg font-semibold text-lg hover:opacity-90 transition-opacity">
+                        Register
+                    </button>
+                    <p class="text-center mt-4">
+                        Already have an account? <a href="#login" class="text-gold-accent hover:underline">Log in here</a>
+                    </p>
+                </form>
+            </div>
+        </section>
+        <!-- About Us Section -->
+        <section id="about" class="main-section hidden flex items-center justify-center p-6">
+            <div class="bg-white p-8 rounded-2xl shadow-xl max-w-3xl w-full" style="background-color: var(--card-bg);">
+                <h1 class="text-3xl font-bold text-center mb-6">Welcome to ColorMatch</h1>
+                <h2 class="text-xl font-semibold mb-2">About Us</h2>
+                <p class="mb-4">
+                    ColorMatch is a vibrant platform built to help you discover perfect color combinations for design, fashion, and art. We believe in creativity, precision, and a touch of elegance in everything we do.
+                </p>
+                <p class="mb-4">
+                    We empower designers, artists, and creatives to explore an endless palette of ideas through intuitive tools and cutting-edge color analysis. Our mission is to make color selection simple, smart, and inspiring — whether you're building a brand, painting a canvas, or styling a wardrobe.
+                    With a growing community of creatives, ColorMatch is where imagination meets technology.
+                </p>
+                <button onclick="toggleMore()" class="bg-gradient-to-r from-[#B8A17F] to-[#cc9e5a] text-white px-5 py-2 rounded-md hover:opacity-90 transition-all duration-300">
+                    Know More
+                </button>
+                <div id="moreContent" class="mt-6 hidden">
+                    <h3 class="text-lg font-semibold mb-2">Our Vision & Mission</h3>
+                    <ul class="list-disc ml-6 mb-4">
+                        <li><strong>Vision:</strong> To become the world’s leading platform for intelligent color inspiration.</li>
+                        <li><strong>Mission:</strong> To help every creator bring their ideas to life with the power of perfect color combinations.</li>
+                    </ul>
+                    <h3 class="text-lg font-semibold mb-2">Key Features</h3>
+                    <ul class="list-disc ml-6 mb-4">
+                        <li>AI-driven color suggestions</li>
+                        <li>Color harmony checker (complementary, analogous, triadic, etc.)</li>
+                        <li>Save and share palettes</li>
+                        <li>Accessibility and contrast checker</li>
+                        <li>Fashion and interior design mockup previews</li>
+                    </ul>
+                    <h3 class="text-lg font-semibold mb-2">Who We Serve</h3>
+                    <ul class="list-disc ml-6 mb-4">
+                        <li>Designers (graphic, UI/UX, fashion)</li>
+                        <li>Artists</li>
+                        <li>Branding experts</li>
+                        <li>Students and educators in design</li>
+                    </ul>
+                    <h3 class="text-lg font-semibold mb-2">Why ColorMatch?</h3>
+                    <ul class="list-disc ml-6">
+                        <li>User-friendly interface</li>
+                        <li>Scientifically accurate color matching</li>
+                        <li>Real-time previews</li>
+                        <li>Community feedback and rating system</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        <!-- Privacy Policy Section -->
+        <section id="privacy" class="main-section hidden flex items-center justify-center p-6">
+            <div class="bg-white p-8 rounded-2xl shadow-xl max-w-3xl w-full" style="background-color: var(--card-bg);">
+                <h1 class="text-3xl font-bold text-center mb-6">Privacy Policy</h1>
+                <p class="mb-4">At ColorMatch, we value your privacy and are committed to protecting your personal data. This policy explains how we collect, use, and safeguard your information.</p>
+                <ul class="list-disc ml-6 space-y-2">
+                    <li>We only collect necessary data such as name and email for account creation.</li>
+                    <li>Your information will never be sold or shared without your consent.</li>
+                    <li>We use cookies only to enhance your experience, not to track personal behavior.</li>
+                    <li>All data is encrypted and stored securely.</li>
+                    <li>You can request to delete your data at any time by contacting our support.</li>
+                </ul>
+                <p class="mt-6">By using ColorMatch, you agree to the terms outlined in this policy.</p>
+            </div>
+        </section>
+        <!-- Contact Section -->
+        <section id="contact" class="main-section hidden flex items-center justify-center p-6">
+            <div class="bg-white p-8 rounded-2xl shadow-xl max-w-3xl w-full" style="background-color: var(--card-bg);">
+                <h1 class="text-3xl font-bold text-center mb-6">Contact Us</h1>
+                <p class="mb-4 text-center">We’d love to hear from you! Reach out to us with your questions, feedback, or partnership ideas.</p>
+                <form id="contact-form" class="space-y-4">
+                    <div>
+                        <label class="block mb-1 font-medium">Your Name</label>
+                        <input type="text" id="name" class="w-full border border-gray-300 p-2 rounded form-control" placeholder="Enter your name" required />
+                    </div>
+                    <div>
+                        <label class="block mb-1 font-medium">Email Address</label>
+                        <input type="email" id="email" class="w-full border border-gray-300 p-2 rounded form-control" placeholder="you@example.com" required />
+                    </div>
+                    <div>
+                        <label class="block mb-1 font-medium">Message</label>
+                        <textarea id="message" class="w-full border border-gray-300 p-2 rounded form-control" rows="4" placeholder="Your message..."></textarea>
+                    </div>
+                    <button type="submit" class="bg-gradient-to-r from-[#B8A17F] to-[#cc9e5a] text-white px-5 py-2 rounded-md hover:opacity-90 transition-all duration-300">
+                        Send Message
+                    </button>
+                </form>
+            </div>
+        </section>
+    </main>
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="footer-content-wrapper">
+            <div class="footer-brand-info">
+                <h3 class="footer-brand-title">Color<span class="gold-accent">Match</span></h3>
+                <p class="footer-copyright">© 2025 ColorMatch. All rights reserved.</p>
+            </div>
+            <div class="footer-links">
+                <a href="#about" class="footer-link">About</a>
+                <a href="#privacy" class="footer-link">Privacy Policy</a>
+                <a href="#contact" class="footer-link">Contact</a>
+            </div>
+            <div class="social-icons-list">
+                <a href="https://www.facebook.com/zaiid.belif/" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://x.com/pvtzaiid" class="social-icon"><i class="fab fa-twitter"></i></a>
+                <a href="https://www.instagram.com/pvtzaiid/" class="social-icon"><i class="fab fa-instagram"></i></a>
+                <a href="https://www.linkedin.com/in/zaid-belif/" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Theme Toggle Button -->
+    <button id="themeToggleBtn" class="theme-toggle-btn">
+        <i class="fas fa-moon"></i>
+    </button>
+    
+    <!-- Custom Alert Modal Structure -->
+    <div id="customAlertOverlay" class="custom-alert-overlay">
+        <div class="custom-alert-box">
+            <h3 id="alertTitle"></h3>
+            <p id="alertMessage"></p>
+            <button id="alertOkButton">OK</button>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const navLinks = document.querySelectorAll('a[href^="#"]');
+            const sections = document.querySelectorAll('.main-section');
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const themeToggleBtn = document.getElementById('themeToggleBtn');
+            
+            // Check for saved theme preference
+            const savedTheme = localStorage.getItem('colorMatch_theme');
+            if (savedTheme === 'night') {
+                document.body.classList.add('night-theme');
+                themeToggleBtn.innerHTML = '<i class="fas fa-sun"></i>';
+            }
+            
+            // --- Navigation Logic ---
+            const showSection = (id) => {
+                sections.forEach(section => {
+                    section.classList.remove('active');
+                });
+                const targetSection = document.getElementById(id);
+                if (targetSection) {
+                    targetSection.classList.add('active');
+                }
+            };
+            
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const targetId = link.getAttribute('href').substring(1);
+                    showSection(targetId);
+                    if (!mobileMenu.classList.contains('hidden')) {
+                         mobileMenu.classList.add('hidden');
+                    }
+                });
+            });
+            
+            mobileMenuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+            
+            // --- Theme Toggle Functionality ---
+            themeToggleBtn.addEventListener('click', () => {
+                if (document.body.classList.contains('night-theme')) {
+                    document.body.classList.remove('night-theme');
+                    themeToggleBtn.innerHTML = '<i class="fas fa-moon"></i>';
+                    localStorage.setItem('colorMatch_theme', 'day');
+                } else {
+                    document.body.classList.add('night-theme');
+                    themeToggleBtn.innerHTML = '<i class="fas fa-sun"></i>';
+                    localStorage.setItem('colorMatch_theme', 'night');
+                }
+            });
+            
+            // --- Custom Alert Modal ---
+            function showCustomAlert(title, message, callback) {
+                const overlay = document.getElementById('customAlertOverlay');
+                const alertTitle = document.getElementById('alertTitle');
+                const alertMessage = document.getElementById('alertMessage');
+                const alertOkButton = document.getElementById('alertOkButton');
+                if (overlay) {
+                    alertTitle.textContent = title;
+                    alertMessage.textContent = message;
+                    overlay.classList.add('active');
+                    const handleOkClick = () => {
+                        overlay.classList.remove('active');
+                        alertOkButton.removeEventListener('click', handleOkClick);
+                        if (callback && typeof callback === 'function') {
+                            callback();
+                        }
+                    };
+                    alertOkButton.addEventListener('click', handleOkClick);
+                }
+            }
+            
+            // --- Contact Form Logic ---
+            const contactForm = document.getElementById('contact-form');
+            if (contactForm) {
+                contactForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    showCustomAlert('Message Sent!', 'Thank you for your message. We will get back to you soon!', () => {
+                        contactForm.reset();
+                    });
+                });
+            }
+            
+            // --- About Us Section "Know More" Toggle ---
+            const moreContent = document.getElementById("moreContent");
+            window.toggleMore = () => {
+                if (moreContent) {
+                    moreContent.classList.toggle("hidden");
+                }
+            };
+            
+            // --- Password Visibility Toggle for Login and Registration ---
+            window.togglePasswordVisibility = (fieldId) => {
+                const passwordField = document.getElementById(fieldId);
+                const icon = passwordField.nextElementSibling.querySelector('i');
+                if (passwordField.type === 'password') {
+                    passwordField.type = 'text';
+                    icon.classList.remove('fa-eye');
+                    icon.classList.add('fa-eye-slash');
+                } else {
+                    passwordField.type = 'password';
+                    icon.classList.remove('fa-eye-slash');
+                    icon.classList.add('fa-eye');
+                }
+            };
+            
+            // --- Registration Form Validation ---
+            const registrationForm = document.getElementById('registration-form');
+            if (registrationForm) {
+                registrationForm.addEventListener('submit', (e) => {
+                    const password = document.getElementById('reg-password').value;
+                    const confirmPassword = document.getElementById('reg-confirm-password').value;
+                    const passwordMatchError = document.getElementById('password-match-error');
+                    if (password !== confirmPassword) {
+                        e.preventDefault();
+                        passwordMatchError.classList.remove('hidden');
+                    } else {
+                        passwordMatchError.classList.add('hidden');
+                        showCustomAlert('Success!', 'Account created. You can now log in.', () => {
+                            window.location.hash = 'login';
+                        });
+                    }
+                });
+            }
+            
+            // --- Dashboard/AI Analyzer Logic ---
+            const uploadPhotoBtn = document.getElementById('uploadPhotoBtn');
+            const useWebcamBtn = document.getElementById('useWebcamBtn');
+            const chooseSwatchBtn = document.getElementById('chooseSwatchBtn');
+            const photoInput = document.getElementById('photoInput');
+            const webcamContainer = document.getElementById('webcamContainer');
+            const webcamVideo = document.getElementById('webcamVideo');
+            const captureBtn = document.getElementById('captureBtn');
+            const capturedImage = document.getElementById('capturedImage');
+            const photoPreviewContainer = document.getElementById('photoPreviewContainer');
+            const photoPreview = document.getElementById('photoPreview');
+            const photoName = document.getElementById('photoName');
+            const swatchContainer = document.getElementById('swatchContainer');
+            const skinSwatches = document.querySelectorAll('[data-tone]');
+            const analyzeBtn = document.getElementById('analyzeBtn');
+            const loadingIndicator = document.getElementById('loadingIndicator');
+            const resultsSection = document.getElementById('resultsSection');
+            const colorResults = document.getElementById('colorResults');
+            const resultToggle = document.getElementById('resultToggle');
+            
+            let currentInputMethod = null;
+            let selectedSkinTone = null;
+            let capturedImageBase64 = null;
+            let showTenColors = false;
+            let stream = null;
+            
+            // Color suggestions for different skin tones
+            const colorSuggestions = {
+                light: [
+                    { name: "Peach Blush", hex: "#FFDAB9" },
+                    { name: "Warm Beige", hex: "#DCAE96" },
+                    { name: "Soft Teal", hex: "#B2D8D8" },
+                    { name: "Lavender Mist", hex: "#E6E6FA" },
+                    { name: "Coral Pink", hex: "#F88379" },
+                    { name: "Pale Gold", hex: "#FAD5A5" },
+                    { name: "Powder Blue", hex: "#B0E0E6" },
+                    { name: "Mint Cream", hex: "#F5FFFA" },
+                    { name: "Rose Quartz", hex: "#F7CAC9" },
+                    { name: "Light Salmon", hex: "#FFA07A" }
+                ],
+                fair: [
+                    { name: "Salmon", hex: "#FA8072" },
+                    { name: "Sage Green", hex: "#BCB88A" },
+                    { name: "Cornflower Blue", hex: "#6495ED" },
+                    { name: "Peach", hex: "#FDD5B1" },
+                    { name: "Thistle", hex: "#D8BFD8" },
+                    { name: "Light Coral", hex: "#F08080" },
+                    { name: "Pale Turquoise", hex: "#AFEEEE" },
+                    { name: "Wheat", hex: "#F5DEB3" },
+                    { name: "Plum", hex: "#DDA0DD" },
+                    { name: "Light Sky Blue", hex: "#87CEFA" }
+                ],
+                medium: [
+                    { name: "Coral", hex: "#FF7F50" },
+                    { name: "Olive", hex: "#808000" },
+                    { name: "Royal Blue", hex: "#4169E1" },
+                    { name: "Terracotta", hex: "#E2725B" },
+                    { name: "Mustard", hex: "#FFDB58" },
+                    { name: "Tomato", hex: "#FF6347" },
+                    { name: "Steel Blue", hex: "#4682B4" },
+                    { name: "Goldenrod", hex: "#DAA520" },
+                    { name: "Indian Red", hex: "#CD5C5C" },
+                    { name: "Medium Sea Green", hex: "#3CB371" }
+                ],
+                olive: [
+                    { name: "Teal", hex: "#008080" },
+                    { name: "Burgundy", hex: "#800020" },
+                    { name: "Copper", hex: "#CD7F32" },
+                    { name: "Forest Green", hex: "#228B22" },
+                    { name: "Plum Purple", hex: "#8E4585" },
+                    { name: "Dark Slate Gray", hex: "#2F4F4F" },
+                    { name: "Sienna", hex: "#A0522D" },
+                    { name: "Olive Drab", hex: "#6B8E23" },
+                    { name: "Cadet Blue", hex: "#5F9EA0" },
+                    { name: "Chocolate", hex: "#D2691E" }
+                ],
+                dark: [
+                    { name: "Fuchsia", hex: "#FF00FF" },
+                    { name: "Royal Blue", hex: "#4169E1" },
+                    { name: "Emerald", hex: "#50C878" },
+                    { name: "Orange Red", hex: "#FF4500" },
+                    { name: "Gold", hex: "#FFD700" },
+                    { name: "Hot Pink", hex: "#FF69B4" },
+                    { name: "Deep Sky Blue", hex: "#00BFFF" },
+                    { name: "Lime Green", hex: "#32CD32" },
+                    { name: "Violet", hex: "#EE82EE" },
+                    { name: "Turquoise", hex: "#40E0D0" }
+                ]
+            };
+            
+            // Update UI state based on selected input method
+            const updateUIState = (method) => {
+                currentInputMethod = method;
+                
+                // Reset all buttons to secondary style
+                uploadPhotoBtn.classList.remove('btn-primary-custom');
+                uploadPhotoBtn.classList.add('btn-secondary-custom');
+                
+                useWebcamBtn.classList.remove('btn-primary-custom');
+                useWebcamBtn.classList.add('btn-secondary-custom');
+                
+                chooseSwatchBtn.classList.remove('btn-primary-custom');
+                chooseSwatchBtn.classList.add('btn-secondary-custom');
+                
+                // Hide all input containers
+                webcamContainer.classList.add('hidden');
+                photoPreviewContainer.classList.add('hidden');
+                swatchContainer.classList.add('hidden');
+                
+                // Show appropriate container and update button style
+                if (method === 'photo') {
+                    uploadPhotoBtn.classList.remove('btn-secondary-custom');
+                    uploadPhotoBtn.classList.add('btn-primary-custom');
+                    photoPreviewContainer.classList.remove('hidden');
+                } else if (method === 'webcam') {
+                    useWebcamBtn.classList.remove('btn-secondary-custom');
+                    useWebcamBtn.classList.add('btn-primary-custom');
+                    webcamContainer.classList.remove('hidden');
+                    startWebcam();
+                } else if (method === 'swatch') {
+                    chooseSwatchBtn.classList.remove('btn-secondary-custom');
+                    chooseSwatchBtn.classList.add('btn-primary-custom');
+                    swatchContainer.classList.remove('hidden');
+                }
+                
+                localStorage.setItem('colorMatch_inputMethod', method);
+            };
+            
+            // Webcam functionality
+            const startWebcam = async () => {
+                try {
+                    stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                    webcamVideo.srcObject = stream;
+                    webcamVideo.style.display = 'block';
+                    captureBtn.style.display = 'block';
+                    capturedImage.style.display = 'none';
+                } catch (error) {
+                    console.error('Webcam error:', error);
+                    
+                    let errorMessage = "Could not access your webcam. Please try the following:\n\n";
+                    errorMessage += "1. Make sure you are running this on a local server (not by opening the file directly).\n";
+                    errorMessage += "2. Check that your webcam is connected and not in use by another application.\n";
+                    errorMessage += "3. Ensure you click 'Allow' when the browser asks for camera permission.\n";
+                    errorMessage += "4. Try refreshing the page or using a different browser.\n\n";
+                    errorMessage += `Technical Details: ${error.name}`;
+                    
+                    showCustomAlert('Webcam Error', errorMessage);
+                }
+            };
+            
+            const stopWebcam = () => {
+                if (stream) {
+                    stream.getTracks().forEach(track => track.stop());
+                    webcamVideo.srcObject = null;
+                }
+            };
+            
+            // Event Listeners
+            uploadPhotoBtn.addEventListener('click', () => {
+                photoInput.click();
+            });
+            
+            useWebcamBtn.addEventListener('click', () => {
+                updateUIState('webcam');
+            });
+            
+            chooseSwatchBtn.addEventListener('click', () => {
+                updateUIState('swatch');
+            });
+            
+            photoInput.addEventListener('change', (e) => {
+                if (e.target.files.length > 0) {
+                    const file = e.target.files[0];
+                    if (file.size > 25 * 1024 * 1024) {
+                        showCustomAlert('File Too Large', 'Please select an image under 25MB.');
+                        return;
+                    }
+                    
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        photoPreview.src = event.target.result;
+                        photoName.textContent = file.name;
+                        updateUIState('photo');
+                        analyzeBtn.disabled = false;
+                        
+                        // Convert to base64 for API (if needed)
+                        const img = new Image();
+                        img.onload = () => {
+                            const canvas = document.createElement('canvas');
+                            const ctx = canvas.getContext('2d');
+                            canvas.width = img.width;
+                            canvas.height = img.height;
+                            ctx.drawImage(img, 0, 0);
+                            capturedImageBase64 = canvas.toDataURL('image/jpeg').split(',')[1];
+                        };
+                        img.src = event.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+            
+            captureBtn.addEventListener('click', () => {
+                // Capture image from webcam
+                const canvas = document.createElement('canvas');
+                canvas.width = webcamVideo.videoWidth;
+                canvas.height = webcamVideo.videoHeight;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(webcamVideo, 0, 0, canvas.width, canvas.height);
+                
+                // Convert to data URL
+                const dataUrl = canvas.toDataURL('image/jpeg');
+                capturedImage.src = dataUrl;
+                capturedImage.style.display = 'block';
+                webcamVideo.style.display = 'none';
+                captureBtn.style.display = 'none';
+                
+                // Save base64 for API (remove data:image/jpeg;base64, prefix)
+                capturedImageBase64 = dataUrl.split(',')[1];
+                
+                // Enable analyze button
+                analyzeBtn.disabled = false;
+                
+                // Stop webcam stream
+                stopWebcam();
+            });
+            
+            skinSwatches.forEach(swatch => {
+                swatch.addEventListener('click', () => {
+                    skinSwatches.forEach(s => s.style.boxShadow = 'none');
+                    swatch.style.boxShadow = '0 0 0 3px var(--accent)';
+                    selectedSkinTone = swatch.dataset.tone;
+                    analyzeBtn.disabled = false;
+                });
+            });
+            
+            resultToggle.addEventListener('change', () => {
+                showTenColors = resultToggle.checked;
+            });
+            
+            analyzeBtn.addEventListener('click', async () => {
+                if (!currentInputMethod) {
+                    showCustomAlert('Missing Input', 'Please select an input method: Upload Photo, Use Webcam, or Choose Swatch');
+                    return;
+                }
+                
+                if (currentInputMethod === 'swatch' && !selectedSkinTone) {
+                    showCustomAlert('Missing Selection', 'Please select a skin tone swatch.');
+                    return;
+                }
+                
+                if ((currentInputMethod === 'photo' && !photoInput.files[0]) && 
+                    (currentInputMethod === 'webcam' && !capturedImageBase64)) {
+                    showCustomAlert('Missing Photo', 'Please upload a photo or capture one with your webcam.');
+                    return;
+                }
+                
+                loadingIndicator.classList.remove('hidden');
+                resultsSection.classList.add('hidden');
+                analyzeBtn.disabled = true;
+                
+                // Simulate API call delay
+                setTimeout(() => {
+                    let colorsToShow = [];
+                    
+                    if (currentInputMethod === 'swatch') {
+                        colorsToShow = colorSuggestions[selectedSkinTone].slice(0, showTenColors ? 10 : 5);
+                    } else {
+                        // For photo or webcam, we'll use a random skin tone for demo purposes
+                        // In a real app, you would analyze the image to determine skin tone
+                        const skinTones = ['light', 'fair', 'medium', 'olive', 'dark'];
+                        const randomTone = skinTones[Math.floor(Math.random() * skinTones.length)];
+                        colorsToShow = colorSuggestions[randomTone].slice(0, showTenColors ? 10 : 5);
+                    }
+                    
+                    loadingIndicator.classList.add('hidden');
+                    
+                    if (colorsToShow.length > 0) {
+                        colorResults.innerHTML = '';
+                        colorsToShow.forEach(color => {
+                            const card = document.createElement('div');
+                            card.className = 'color-swatch';
+                            card.innerHTML = `
+                                <div class="color-block" style="background-color: ${color.hex};"></div>
+                                <div class="color-info mt-2 text-center">
+                                    <h4 class="font-semibold text-lg">${color.name}</h4>
+                                    <span class="text-sm text-gray-500">${color.hex}</span>
+                                </div>
+                            `;
+                            colorResults.appendChild(card);
+                        });
+                        resultsSection.classList.remove('hidden');
+                    } else {
+                        showCustomAlert('No Results', 'No color palette could be generated from your selection. Please try a different image or swatch.');
+                    }
+                    
+                    analyzeBtn.disabled = false;
+                }, 1500); // Simulate 1.5 second processing time
+            });
+        });
+    </script>
+</body>
+</html>
